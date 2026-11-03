@@ -8,14 +8,14 @@
 #   subsystem that modern OpenSSH scp defaults to.
 #
 # Usage:
-#   TC_HOST=root@192.168.31.44 [AUTO_BOOT=1] ./deploy.sh
+#   TC_HOST=root@<IP地址> [AUTO_BOOT=1] ./deploy.sh
 #
 # AUTO_BOOT=1 additionally injects the re-seed call into /mnt/Flash/boot.sh so
 # the toolbox is auto-loaded on every boot (the TC root fs resets from firmware
 # at each boot). Safe to re-run: the injection is idempotent.
 set -e
 SCRIPT_DIR=$(CDPATH= cd "$(dirname "$0")" && pwd)
-TC="${TC_HOST:-root@192.168.31.44}"
+TC="${TC_HOST:-root@<IP地址>}"
 SRC="$SCRIPT_DIR/bin"
 DEST=/Volumes/dk2/.tc_tools/bin
 

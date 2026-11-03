@@ -19,16 +19,16 @@
 git clone <this-repo> tc-toolbox && cd tc-toolbox
 
 # 2) 部署二进制 + PATH 钩子 + boot 重注脚本到 TC
-#    TC_HOST 默认为 root@192.168.31.44，按需修改
-TC_HOST=root@192.168.31.44 ./deploy.sh
+#    TC_HOST 默认为 root@<IP地址>，按需修改
+TC_HOST=root@<IP地址> ./deploy.sh
 
 # 3) 让工具箱在每次开机后自动生效（向 /mnt/Flash/boot.sh 注入重注钩子，幂等）
-TC_HOST=root@192.168.31.44 AUTO_BOOT=1 ./deploy.sh
+TC_HOST=root@<IP地址> AUTO_BOOT=1 ./deploy.sh
 
 # 4) 重启 TC 验证（可选但推荐）
-ssh root@192.168.31.44 reboot
+ssh root@<IP地址> reboot
 # 重连后登录即自带工具箱；或：
-ssh root@192.168.31.44 'export PATH=/Volumes/dk2/.tc_tools/bin:$PATH; nc -h; diff --version; od -c /dev/null'
+ssh root@<IP地址> 'export PATH=/Volumes/dk2/.tc_tools/bin:$PATH; nc -h; diff --version; od -c /dev/null'
 ```
 
 > `deploy.sh` 使用 `scp -O`（legacy SCP 协议），因为 TC 的 sshd **没有 SFTP 子系统**，现代 `scp` 默认走 SFTP 会失败。
