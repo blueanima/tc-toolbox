@@ -1,0 +1,12 @@
+# ---- build intermediates (NOT committed) ----
+# NetBSD src tree, cross toolchain, sysroot, object tree and build logs live
+# here and are many gigabytes. Only the finished binaries (./bin) are committed.
+buildroot/
+
+# stray logs
+*.log
+
+# OS / editor cruft
+.DS_Store
+*.swp
+*~
