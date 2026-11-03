@@ -8,6 +8,24 @@
 2. **部署与开机自启**：`deploy.sh`、`tc-files/`（PATH 钩子 + boot 重注脚本 + 开机注入器）。
 3. **构建环境**：`Dockerfile` + 交叉编译脚本（`fetch_src.sh` / `build_toolbox.sh` / `build_extra.sh` / `run.sh` / `build/`），可随时重新生成成品。
 
+### English Overview
+
+The AirPort Time Capsule runs NetBSD 6.0 on evbarm / earmv4 and **ships without
+a dynamic linker (`ld.elf_so`)**, so it can only execute statically-linked armv4
+ELF binaries and comes with a very limited built-in command set. This repository
+provides a fully replicable static toolbox for the device:
+
+- **Prebuilt artifacts** — 53 static binaries under `bin/` (48 core + `nc` /
+  `diff` / `od` / `hexdump` + the pre-existing `rsync`). Deploy as-is; no rebuild needed.
+- **Deploy & boot autoload** — `deploy.sh` plus `tc-files/` (PATH hook, profile
+  re-seed, boot-hook injector for auto-loading after every reboot).
+- **Build environment** — `Dockerfile` + cross-compile scripts to regenerate the
+  artifacts anytime.
+
+Quick start: clone this repo, set `TC_HOST=root@<IP地址>`, run `./deploy.sh`
+and `./deploy.sh AUTO_BOOT=1`, then reboot. The Chinese sections below contain
+the full detail (machine-translatable).
+
 ---
 
 ## 一、快捷复刻（推荐，免编译）
