@@ -43,7 +43,7 @@ ssh root@192.168.31.44 'export PATH=/Volumes/dk2/.tc_tools/bin:$PATH; nc -h; dif
 tc-toolbox/
 ├── README.md                 # 本文件
 ├── .gitignore                # 排除 buildroot/ 等大型中间产物
-├── Dockerfile                # 构建镜像：debian:bookworm + gcc-12 包装器 + Surge 代理
+├── Dockerfile                # 构建镜像：debian:bookworm + gcc-12 包装器
 ├── run.sh                    # 起容器跑构建（自包含；EXTRA=1 顺带编 nc/diff/od）
 ├── fetch_src.sh              # 拉取并解包 NetBSD 7 源码（幂等）
 ├── build_toolbox.sh          # 构建交叉工具链 + 48 个核心静态工具（容器内）
@@ -67,7 +67,7 @@ tc-toolbox/
 
 ## 三、从零重新构建（可选）
 
-仅在你需要改动/新增某个工具时才需要。前置：macOS + Docker（推荐 OrbStack）+ Mac 上 Surge 代理 `:6152`。
+仅在你需要改动/新增某个工具时才需要。前置：macOS + Docker（推荐 OrbStack）。
 
 ```sh
 ./run.sh          # 构建 48 个核心静态工具

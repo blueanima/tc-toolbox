@@ -34,9 +34,8 @@ if [ "${EXTRA:-0}" = "1" ]; then
 fi
 
 echo "==> running container (logs -> $BUILDROOT/build.log)"
-# The image bakes http_proxy/https_proxy pointing at the Mac's Surge proxy
-# (host.docker.internal:6152), which is the only working outbound path from the
-# container. We intentionally do NOT clear it here, so the container inherits it.
+# Optional outbound proxy: pass -e http_proxy=... -e https_proxy=... at run time
+# if your build environment requires one; the image otherwise uses direct egress.
 docker run --rm \
   -v "$BUILDROOT:/buildroot" \
   -v "tc_wb:/wb-build" \

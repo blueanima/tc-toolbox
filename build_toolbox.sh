@@ -68,7 +68,7 @@ if [ -f "$SRC/build.sh" ]; then
     echo "src already present at $SRC; skipping extract"
 else
     if [ ! -s "$TGZ" ]; then
-        echo "FATAL: $TGZ missing; download it on the host via Surge first" >&2
+        echo "FATAL: $TGZ missing; download it on the host first" >&2
         exit 1
     fi
     echo "verifying gzip ..."

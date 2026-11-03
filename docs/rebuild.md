@@ -4,7 +4,7 @@
 
 ## 前置条件
 - 一台能跑 Docker 的 macOS 主机（推荐 OrbStack；本仓库的容器与挂载约定按 macOS 设计）。
-- Mac 上运行 **Surge 代理**并开启 `:6152`（HTTP）/`:6153`（SOCKS5）对外（容器以此作为唯一出网路径）。若你的代理端口/软件不同，改 `Dockerfile` 里的 `http_proxy` / `https_proxy` 环境变量。
+- 一个能联网的 Docker 构建环境（用于拉取 NetBSD 7 源码与容器 apt；网络连通性由构建机自行保证，本仓库不附带特定代理配置）。
 - 能访问 `github.com/NetBSD/src`（codeload 下载源码）与 Debian 镜像（容器 `apt`）。
 
 ## 目录约定（容器内）
@@ -39,6 +39,6 @@
 若你不想要这份外部依赖，`build_toolbox.sh`/`build_extra.sh` 已内置 `select_tool_triple` 兜底，并在 `env.sh` 缺失时安全跳过（`|| true`），仍可运行——只是 `env.sh` 提供的其他 SDK 默认将回落到脚本内的覆盖值。
 
 ## 构建耗时与排错
-- 首次构建交叉工具链耗时较长（小时级），且强依赖 Surge 代理（源码拉取、apt 均走它）。
-- 若 `apt` 报证书/签名错误：容器已设 `Acquire::https::Verify-Peer/Host false` 并用 HTTPS CONNECT，仍由 Debian keyring 校验 InRelease；确认 Surge 的 `:6152` 确实可达。
+- 首次构建交叉工具链耗时较长（小时级），且需联网拉取 NetBSD 7 源码与容器 apt 依赖。
+- 若 `apt` 报证书/签名错误：容器已设 `Acquire::https::Verify-Peer/Host false`，仍由 Debian keyring 校验 InRelease；确认构建机能正常访问 Debian 镜像。
 - 若源码解包后报"大小写冲突/文件缺失"：确认 `/wb-build` 是大小写敏感卷（重建 `tc_wb` 卷即可）。

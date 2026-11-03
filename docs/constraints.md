@@ -13,7 +13,7 @@
   - 做法：容器内的 `/wb-build` 用独立的 Docker 卷（macOS 上创建时即大小写敏感）；仅最终成品 `stage/bin` 写回宿主 `/buildroot`（大小写不敏感无所谓）。
 - **基础镜像用 `debian:bookworm`，不能用 bullseye/buster**：bullseye 已 EOL，其 security 池 `.deb` 已删除（404），导致基础镜像自带的 libc6 永远无法被任何 apt 源匹配；buster 同样失败。bookworm 是稳定版，归档完整自洽。
 - **宿主编译器包装器**：bookworm 默认 `gcc-12` 的 `gnu++17` 默认标准会破坏 NetBSD 7 的 gcc-4.8 时代 C++ 源码（如 `bool++`）。`Dockerfile` 把 `g++/c++` 包装成每次调用追加 `-std=gnu++14 -fpermissive`（命令行最后一个 `-std` 生效），既不破坏现代宿主工具（gmake/binutils/gmp/mpfr/mpc），又让老 gcc 源码能过。
-- **容器出网**：容器内除 DNS 被劫持到死代理外，唯一可用出网是 **Mac 的 Surge 代理** `host.docker.internal:6152`（HTTPS CONNECT，代理无法篡改）。`Dockerfile` 已把 `http(s)_proxy` 写死指向它；`apt` 走清华 Tuna 镜像（直连 deb.debian.org 仅 ~6 KB/s 且超时）。
+- **容器出网**：容器镜像不绑定特定出网方式；从零重建所需的网络（拉取 NetBSD 7 源码、容器 apt）由构建机自身保证，本仓库不附带特定代理配置。
 
 ## 3. 部署 / 设备端约束
 - **TC 的 sshd 没有 SFTP 子系统**，现代 OpenSSH `scp` 默认走 SFTP 会 `subsystem request failed`。解决：`scp -O`（强制 legacy SCP 协议）。
